@@ -1,23 +1,21 @@
 package com.poc.feign.exception;
 
 import feign.FeignException;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @RestControllerAdvice
 public class HandlerError {
 
     @ExceptionHandler(FeignException.class)
-    public ErrorDetails handleFeignStatusException(FeignException e, HttpServletRequest http) {
+    public Map<String, Object> handleFeignStatusException(FeignException e, HttpServletResponse http) {
 
-        ErrorDetails errorDetails = new ErrorDetails();
+        http.setStatus(e.status());
 
-        errorDetails.setMessage(e.getLocalizedMessage());
-        errorDetails.setStatus(e.status());
-        errorDetails.setPath(http.getRequestURI());
-
-        return errorDetails;
+        return new JSONObject(e.contentUTF8()).toMap();
     }
 }
