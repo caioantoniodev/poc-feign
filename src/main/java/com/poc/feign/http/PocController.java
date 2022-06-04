@@ -1,8 +1,7 @@
 package com.poc.feign.http;
 
-import com.poc.feign.http.dto.AddressReponse;
+import com.poc.feign.domain.Book;
 import com.poc.feign.service.PocService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,14 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/address")
+@RequestMapping("/v1")
 public class PocController {
 
-    @Autowired
-    private PocService pocService;
+    private final PocService pocService;
 
-    @GetMapping("/{zipCode}")
-    public ResponseEntity<AddressReponse> getAddress(@PathVariable String zipCode) {
-        return ResponseEntity.ok(pocService.getAddress(zipCode));
+    public PocController(PocService pocService) {
+        this.pocService = pocService;
+    }
+
+    @GetMapping("/books/{bookId}")
+    public ResponseEntity<Book> getBook(@PathVariable String bookId) {
+        return ResponseEntity.ok(pocService.getBook(bookId));
     }
 }

@@ -1,15 +1,15 @@
 package com.poc.feign.http.client;
 
-import com.poc.feign.domain.Address;
+import com.poc.feign.domain.Book;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@FeignClient(name = "viaCep", url = "https://viacep.com.br/ws")
-public interface AddressClient {
+@FeignClient(name = "library-management-ms", url = "http://localhost:9000/v1/books")
+public interface BookClient {
 
-    @GetMapping("/{zipCode}/json")
+    @GetMapping("/{bookId}")
     @ResponseBody
-    Address getAddress(@PathVariable String zipCode);
+    Book getBook(@PathVariable String bookId);
 }
